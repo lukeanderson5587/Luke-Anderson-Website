@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luke Anderson Website</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f4f4f2;
+    --border: #e2e2de;
+    --text: #1c1c1c;
+    --muted: #6a6a66;
+    --accent: #2563b0;
+    --banner: #1b3a63;
+    --banner-light: #2f6db5;
+    --nav-bg: #eaf1fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+  }
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
+
+  #wrapper { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* full-width color bands inside the centered wrapper */
+  #banner, #navbar { position: relative; }
+  #banner::before, #navbar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    z-index: -1;
+  }
+  #banner { padding: 56px 0 32px; color: #ffffff; z-index: 0; }
+  #banner::before { background: linear-gradient(90deg, var(--banner), var(--banner-light)); }
+  #banner h1 { margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -0.5px; }
+  #banner p { margin: 6px 0 0; color: #bcd3ee; }
+
+  #navbar { z-index: 1; }
+  #navbar::before { background: var(--nav-bg); }
+  #navbar ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 28px; }
+  #navbar li { position: relative; }
+  #navbar a.tab {
+    display: block;
+    padding: 12px 0;
+    color: var(--muted);
+    text-decoration: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  #navbar a.tab:hover { color: var(--banner); }
+  #navbar a.tab.active { color: var(--banner); border-bottom-color: var(--accent); font-weight: 600; }
+  #navbar .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -12px;
+    min-width: 270px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    z-index: 10;
+  }
+  #navbar li:hover .dropdown { display: block; }
+  #navbar .dropdown a {
+    display: block;
+    padding: 8px 12px;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  #navbar .dropdown a:hover { background: var(--nav-bg); }
+
+  #content { padding: 40px 0 40px; }
+  .page { display: none; }
+  .page.show { display: block; }
+
+  h2 { color: var(--banner); font-size: 28px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 20px; }
+  h3 { font-size: 19px; font-weight: 600; margin: 28px 0 6px; }
+  p { margin: 0 0 14px; max-width: 68ch; }
+
+  .placeholder-img {
+    background: var(--surface);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .img-left { float: left; width: 220px; height: 220px; margin: 0 28px 16px 0; }
+  .profile-photo { object-fit: cover; object-position: 50% 30%; border-radius: 6px; }
+  #page-home p { margin-bottom: 28px; }
+  .img-wide { width: 100%; height: 300px; margin: 0 0 8px; }
+  .img-row { display: flex; gap: 16px; margin: 20px 0; }
+  .img-row .placeholder-img { flex: 1; height: 150px; }
+  .img-row.two .placeholder-img { height: 220px; }
+  .img-row.two img {
+    flex: 1;
+    min-width: 0;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .img-row.three img {
+    flex: 1;
+    min-width: 0;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .project-video {
+    display: block;
+    width: 100%;
+    max-height: 520px;
+    background: #000;
+    border-radius: 6px;
+    margin: 0 0 8px;
+  }
+  .media-row { display: flex; gap: 16px; margin: 20px 0; align-items: stretch; }
+  .media-row img { flex: 1; min-width: 0; height: 320px; object-fit: cover; border-radius: 6px; }
+  .media-row video { flex: 2; min-width: 0; height: 320px; object-fit: contain; background: #000; border-radius: 6px; }
+  .clear { clear: both; }
+  .main-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    object-position: 50% 55%;
+    border-radius: 6px;
+    margin: 0 0 8px;
+  }
+  .resume-frame {
+    width: 100%;
+    height: 1000px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+  }
+
+  #contact { border-top: 1px solid var(--border); padding: 8px 0 48px; }
+  #contact h3 { margin-top: 20px; }
+  #contact p { margin: 0; }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
+  body { overflow-x: hidden; }
+
+  @media (max-width: 600px) {
+    .resume-frame { height: 600px; }
+    #banner { padding-top: 36px; }
+    #banner h1 { font-size: 28px; }
+    .img-left { float: none; width: 100%; margin: 0 0 16px 0; }
+    .img-row { flex-direction: column; }
+    .img-row.two .placeholder-img { height: 160px; }
+    .img-row.two img { flex: none; width: 100%; height: 200px; }
+    .img-row.three img { flex: none; width: 100%; height: 240px; }
+    .media-row { flex-direction: column; }
+    .media-row img { flex: none; width: 100%; height: 260px; }
+    .media-row video { flex: none; width: 100%; height: auto; }
+    .img-wide { height: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+
+  <div id="banner">
+    <h1>Luke Anderson - Robotics Engineer</h1>
+    <p>I <3 3D modeling</p>
+  </div>
+
+  <div id="navbar">
+    <ul>
+      <li><a class="tab active" id="tab-home" onclick="showPage('home')">Home</a></li>
+      <li>
+        <a class="tab" id="tab-projects" onclick="showPage('projects')">Projects</a>
+        <div class="dropdown">
+          <a onclick="showPage('combat')">Combat Robotics</a>
+          <a onclick="showPage('joints')">Robotic Joints / Power Transmission</a>
+          <a onclick="showPage('misc')">Misc Projects</a>
+        </div>
+      </li>
+      <li><a class="tab" id="tab-resume" onclick="showPage('resume')">Resume</a></li>
+    </ul>
+  </div>
+
+  <div id="content">
+
+    <!-- HOME / ABOUT ME -->
+    <div class="page show" id="page-home">
+      <h2>About Me</h2>
+      <img class="img-left profile-photo" src="Profile.jpg" alt="Luke Anderson">
+      <p>Hello! This website is intended to be a place for me to showcase the various personal projects in engineering I have completed over the years.  </p>
+      <p>All the projects in this website were completed solely by me in my spare time.  I focus on mechanical design mostley in my spare time but have experience in fields such as coding, digital design, pcb layouts, electrical schematics, instrumentation, electronics verification and basic analog design.  If you have questions contact me on linked in or email directly.</p>
+      <div class="clear"></div>
+    </div>
+
+    <!-- PROJECTS LANDING -->
+    <div class="page" id="page-projects">
+      <h2>Projects</h2>
+      <p>Please select one of the following links :)</p>
+      <hr>
+      <p>
+        <a onclick="showPage('combat')" href="#">Combat Robotics</a><br>
+        <a onclick="showPage('joints')" href="#">Robotic Joints / Power Transmission</a><br>
+        <a onclick="showPage('misc')" href="#">Misc Projects</a>
+      </p>
+    </div>
+
+    <!-- RESUME -->
+    <div class="page" id="page-resume">
+      <h2>Resume</h2>
+      <p><a href="LukeAnderson-Resume.pdf" download>Download PDF</a> &nbsp;|&nbsp; <a href="LukeAnderson-Resume.pdf" target="_blank" rel="noopener">Open in new tab</a></p>
+      <iframe class="resume-frame" src="LukeAnderson-Resume.pdf" title="Resume">
+        <p>Your browser can't display PDFs inline. <a href="LukeAnderson-Resume.pdf">Download the resume</a> instead.</p>
+      </iframe>
+    </div>
+
+    <!-- COMBAT ROBOTICS -->
+    <div class="page" id="page-combat">
+      <h2>Combat Robotics</h2>
+      <img class="main-photo" src="First_Battle_Bot.jpg" alt="First battle bot">
+      <h3>First Robot</h3>
+      <p>This is the first combat robot I ever completed.  It is a 3lb robot.  It is mostly 3d printed with a machined steel spinner.  This robot took a fair few months to build and competed after it worked well enoug.  To put it bluntly this robot was a complete train wreck and lost both of its two fights, being largely destroyed in its final fight.  Luckily I learned a lot from my fellow competitors and immediately began work on its sucessor which you see below.</p>
+      <hr>
+      <h3>Pretty Pretty Princess (3lb)</h3>
+      <p>After a complete redesign after my first competition I created this robot here.  The main differnce is that this robot was to be made entirely out of machined parts and feature a completely new weapon design.  Through a number of iterations and one competition I ended up creating the design you see below.  It features an asymetric vertical spinner with a diamter of 145mm, a fully machined carbon fiber sandwitch chassis and a 6s lipo with a 40A 4x1 ESC.  Despite the amount of progress I made I am quite frankly terrified of the 3lb catagory, the robots people make are honestly terrifying.  However I am still quite proud of my design.</p>
+      <img class="main-photo" src="Pretty_Pretty_Princess.jpg" alt="Pretty Pretty Princess">
+      <hr>
+      <h3>Sparkle (1lb)</h3>
+      <p>Sparkle is my first 1lb robot. Taking what I learned from making 3lb robots I applied all that to the 1lb catagory.  Sparkle features a decently sized 90mm vertical spinner and 4 wheel drive.  Sparkle is intended to be a balence between survivability, manuverability and damage.  The previous version of this design did compete earning me my first ever combat robotics win!!  Unfortunately I have not entered a competition as of late due to scheduling conflicts, however sparkle stands ready to fight ot the death >:)</p>
+      <img class="main-photo" style="object-position: 50% 70%;" src="Sparkle.jpg" alt="Sparkle">
+      <hr>
+      <h3>Swirly D (1lb)</h3>
+      <p>Swirly D is my newest bot and is a rather progressive design for me.  It features a 180mm horizontal spinner.  I have machined a custom hub containing high performance bearings to support a cantilevered spinner for the purpose of putting the blade as low down as it can possibly go.  The bearings used are the same spec I use for my 3lb robot's weapon.  The purpose of this design is to have more reach than my opponents and hit lower.  Due to budget concerns (I'm broke) I have not been able to finish machining this design, but hopefully this innovative design can cause chaos at the next event I can attend >:)</p>
+      <div class="img-row two">
+        <img src="SwirlyD.jpg" alt="SwirlyD" style="object-position: 50% 35%;">
+        <img src="SwirlyD_Blade.jpg" alt="SwirlyD blade" style="object-position: 50% 30%;">
+      </div>
+    </div>
+
+    <!-- ROBOTIC JOINTS / POWER TRANSMISSION -->
+    <div class="page" id="page-joints">
+      <h2>Robotic Joints / Power Transmission</h2>
+      <h3>Robot Joint</h3>
+      <p>For this project I attempted to 3D print a robot joint.  This joint needed to be able to lift a decent amount of weight while having as little backlash as possible.  Doing this with a 3d printed design is quite challenging as tolerances can be quite poor for this application.  My first design was using an experimental planetary geared design using two rings of slightly different pitch diameters.  This design ultimately didn't work out as there was far too much friction.  My next design was a cycloidal gearbox.  This design was far smoother and had little backlash.  After building the gearbox, I powered it with an e-skateboard motor being driven by an O-drive.  This was able to lift around 10-15lbs on a lever depending on the motor's settings.  </p>
+      <div class="img-row three">
+        <img src="Planetary_Drive.jpg" alt="Planetary drive" style="object-position: 50% 45%;">
+        <img src="Cycloidal_drive.jpg" alt="Cycloidal drive" style="object-position: 50% 40%;">
+        <img src="cycloidal_assembly.jpg" alt="Cycloidal drive assembly" style="object-position: 50% 40%;">
+      </div>
+      <video class="project-video" controls loop muted playsinline preload="metadata">
+        <source src="CycloidalLift.mp4" type="video/mp4">
+        Your browser can't play this video.
+      </video>
+      <hr>
+      <h3>Differential Swerve Drive</h3>
+      <p>In this project I designed and 3d printed a differential swerve module.  The point of this design is to rotate and power a wheel for a mobile robot, while being able to use the power of both motors to drive and spin it.  This design is rather difficult and requires lots of gearing and bearings to work.  The design did work but was extremly complex to build and assemble, so I elected to not attempt to build a robot that moved with this module.  </p>
+      <div class="media-row">
+        <img src="Differential_Swerve.jpg" alt="Differential swerve drive" style="object-position: 50% 45%;">
+        <video controls loop muted playsinline preload="metadata">
+          <source src="Swerve_Test.mp4" type="video/mp4">
+          Your browser can't play this video.
+        </video>
+      </div>
+    </div>
+
+    <!-- MISC PROJECTS -->
+    <div class="page" id="page-misc">
+      <h2>Misc Projects</h2>
+      <h3>D20 Spinner</h3>
+      <p>This project is quite simple.  It is a mechanical D20, you pull the lever and it spins.  100% 3d printed of course.  </p>
+      <img class="main-photo" style="object-position: 50% 35%;" src="D20_Spinner.jpg" alt="D20 spinner">
+      <hr>
+      <h3>C-Gears</h3>
+      <p>This project involves what are called C-Gears.  This profile of involute spur gears sweeps the teeth in an arc.  This design has been theorized over the years, but discarded due to it being impossible to hob like a normal gear.  However this design is 3d printed.  The benifits, if they exist, for this design are unknown and a potential research topic.</p>
+      <img class="main-photo" style="object-position: 50% 10%;" src="C-Gears.jpg" alt="Helical gears">
+    </div>
+
+  </div>
+
+  <div id="contact">
+    <h3>Contact</h3>
+    <p>
+      <a href="https://www.linkedin.com/in/luke-anderson-77ab4228a" target="_blank" rel="noopener">LinkedIn</a>
+      &nbsp;|&nbsp;
+      <a href="mailto:lukeanderson5587@gmail.com">lukeanderson5587@gmail.com</a>
+    </p>
+  </div>
+
+</div>
+
+<script>
+  function showPage(name) {
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < pages.length; i++) pages[i].classList.remove('show');
+    document.getElementById('page-' + name).classList.add('show');
+
+    document.getElementById('tab-home').classList.toggle('active', name === 'home');
+    var projectPages = ['projects', 'combat', 'joints', 'misc'];
+    document.getElementById('tab-projects').classList.toggle('active', projectPages.indexOf(name) !== -1);
+    document.getElementById('tab-resume').classList.toggle('active', name === 'resume');
+    window.scrollTo(0, 0);
+    return false;
+  }
+</script>
+
+</body>
+</html>
